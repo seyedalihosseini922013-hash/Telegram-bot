@@ -1,7 +1,8 @@
+import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
-TOKEN = "8591463797:AAFBYkF-cgVs3pJhHRufccbHxWXw8WZQUCs"  # توکن جدیدت
+TOKEN = os.getenv("TOKEN", "8591463797:AAFBYkF-cgVs3pJhHRufccbHxWXw8WZQUCs")
 
 FREE_ACCOUNTS = """
 🎁 **اکانت‌های رایگان:**
@@ -46,30 +47,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "3️⃣ 👤 ایدی پشتیبانی - ارتباط با پشتیبانی"
     )
     
-    await update.message.reply_text(
-        welcome_text,
-        reply_markup=reply_markup,
-        parse_mode='Markdown'
-    )
+    await update.message.reply_text(welcome_text, reply_markup=reply_markup)
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     
     if query.data == 'free_accounts':
-        await query.message.reply_text(
-            FREE_ACCOUNTS,
-            parse_mode='Markdown',
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔙 بازگشت به منو", callback_data='back_to_menu')]
-            ])
-        )
+        await query.message.reply_text(FREE_ACCOUNTS, reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔙 بازگشت به منو", callback_data='back_to_menu')]
+        ]))
         
     elif query.data == 'shop':
         await query.message.reply_text(
-            "🛒 **فروشگاه ما:**\n\n"
-            "🔗 https://t.me/shopalizord\n\n"
-            "برای خرید به لینک بالا مراجعه کنید.",
+            "🛒 **فروشگاه ما:**\n\n🔗 https://t.me/shopalizord",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("🔗 رفتن به فروشگاه", url='https://t.me/shopalizord')],
                 [InlineKeyboardButton("🔙 بازگشت", callback_data='back_to_menu')]
@@ -78,9 +69,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
     elif query.data == 'support':
         await query.message.reply_text(
-            "👤 **پشتیبانی:**\n\n"
-            "📍 ایدی: @AliZord_yt\n\n"
-            "📞 برای ارتباط مستقیم روی ایدی بالا کلیک کنید.",
+            "👤 **پشتیبانی:**\n\n📍 ایدی: @AliZord_yt",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("📞 پیام به پشتیبانی", url='https://t.me/AliZord_yt')],
                 [InlineKeyboardButton("🔙 بازگشت", callback_data='back_to_menu')]
@@ -89,17 +78,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
     elif query.data == 'back_to_menu':
         await query.edit_message_text(
-            text="👋 **به ربات خوش آمدید!**\n\n"
-                 "🌟 با استفاده از دکمه‌های زیر می‌توانید به خدمات دسترسی پیدا کنید:\n\n"
-                 "1️⃣ 🎁 اکانت رایگان - دریافت لیست اکانت‌ها\n"
-                 "2️⃣ 🛒 شاپ ما - ورود به فروشگاه\n"
-                 "3️⃣ 👤 ایدی پشتیبانی - ارتباط با پشتیبانی",
+            text="👋 **به ربات خوش آمدید!**",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("🎁 اکانت رایگان", callback_data='free_accounts')],
                 [InlineKeyboardButton("🛒 شاپ ما", callback_data='shop')],
                 [InlineKeyboardButton("👤 ایدی پشتیبانی", callback_data='support')],
-            ]),
-            parse_mode='Markdown'
+            ])
         )
 
 def main():
@@ -110,4 +94,5 @@ def main():
     app.run_polling()
 
 if __name__ == '__main__':
+    main()if __name__ == '__main__':
     main()
